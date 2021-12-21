@@ -1,0 +1,205 @@
+name: Publish Release
+
+on:
+  release:
+    types:
+      - created
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to associate with build."
+        default: "dev"
+
+
+jobs:
+  # html5:
+  #   name: html5
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v2
+  #     - id: get_tag
+  #       name: Get Tag
+  #       env:
+  #         GITHUB_HEAD_REF: $${{ github.head_ref }}
+  #         GITHUB_BASE_REF: ${{ github.base_ref }}
+  #       run: |
+  #         if [ $GITHUB_EVENT_NAME == *"release"* ]
+  #         then
+  #           TAG=$(jq --raw-output '.release.tag_name' $GITHUB_EVENT_PATH)
+  #         elif [ "${{ github.event.inputs.version }}" = "" ]
+  #         then
+  #           TAG=$GITHUB_ACTOR
+  #         else
+  #           TAG=${{ github.event.inputs.version }}
+  #         fi
+  #         echo $TAG > VERSION
+  #         echo ::set-output name=TAG::$TAG
+  #     - name: Build
+  #       id: build
+  #       uses: josephbmanley/build-godot-action@v1.4.0
+  #       with:
+  #         name: index.html
+  #         preset: HTML5
+  #         projectDir: "."
+  #     - name: Push to Itch
+  #       uses: josephbmanley/butler-publish-itchio-action@v1.0.1
+  #       env:
+  #         BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+  #         CHANNEL: html5
+  #         ITCH_GAME: boxnetjam
+  #         ITCH_USER: boxnet
+  #         PACKAGE: ${{ github.workspace }}/${{ steps.build.outputs.build }}
+  #         VERSION: ${{ steps.get_tag.outputs.TAG }}
+  windows:
+    name: windows
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - id: get_tag
+        name: Get Tag
+        env:
+          GITHUB_HEAD_REF: $${{ github.head_ref }}
+          GITHUB_BASE_REF: ${{ github.base_ref }}
+        run: |
+          if [ $GITHUB_EVENT_NAME == *"release"* ]
+          then
+            TAG=$(jq --raw-output '.release.tag_name' $GITHUB_EVENT_PATH)
+          elif [ "${{ github.event.inputs.version }}" = "" ]
+          then
+            TAG=$GITHUB_ACTOR
+          else
+            TAG=${{ github.event.inputs.version }}
+          fi
+          echo $TAG > VERSION
+          echo ::set-output name=TAG::$TAG
+      - name: Build
+        id: build
+        uses: josephbmanley/build-godot-action@v1.4.0
+        with:
+          name: boxnet.exe
+          preset: win64
+          projectDir: "."
+      - name: Add Itch File
+        run: |
+          sudo cp ${{ github.workspace }}/.itch/windows.toml ${{ github.workspace }}/${{ steps.build.outputs.build }}.itch.toml
+      - name: Push to Itch
+        uses: josephbmanley/butler-publish-itchio-action@v1.0.1
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: win64
+          ITCH_GAME: boxnetjam
+          ITCH_USER: boxnet
+          PACKAGE: ${{ github.workspace }}/${{ steps.build.outputs.build }}
+          VERSION: ${{ steps.get_tag.outputs.TAG }}
+  linux:
+    name: linux
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - id: get_tag
+        name: Get Tag
+        env:
+          GITHUB_HEAD_REF: $${{ github.head_ref }}
+          GITHUB_BASE_REF: ${{ github.base_ref }}
+        run: |
+          if [ $GITHUB_EVENT_NAME == *"release"* ]
+          then
+            TAG=$(jq --raw-output '.release.tag_name' $GITHUB_EVENT_PATH)
+          elif [ "${{ github.event.inputs.version }}" = "" ]
+          then
+            TAG=$GITHUB_ACTOR
+          else
+            TAG=${{ github.event.inputs.version }}
+          fi
+          echo $TAG > VERSION
+          echo ::set-output name=TAG::$TAG
+      - name: Build
+        id: build
+        uses: josephbmanley/build-godot-action@v1.4.0
+        with:
+          name: boxnet.x86_64
+          preset: linux
+          projectDir: "."
+      - name: Add Itch File
+        run: |
+          sudo cp ${{ github.workspace }}/.itch/linux.toml ${{ github.workspace }}/${{ steps.build.outputs.build }}.itch.toml
+      - name: Push to Itch
+        uses: josephbmanley/butler-publish-itchio-action@v1.0.1
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: linux
+          ITCH_GAME: boxnetjam
+          ITCH_USER: boxnet
+          PACKAGE: ${{ github.workspace }}/${{ steps.build.outputs.build }}
+          VERSION: ${{ steps.get_tag.outputs.TAG }}
+  osx:
+    name: Build OSX Client
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Godot
+        run: |
+          wget https://downloads.tuxfamily.org/godotengine/3.3/Godot_v3.3-stable_osx.universal.zip
+          unzip Godot_v3.3-stable_osx.universal.zip
+          mv Godot.app /Applications/Godot.app
+          ln -s /Applications/Godot.app/Contents/MacOS/Godot /usr/local/bin/godot
+      - name: Build Project
+        run: |
+          wget https://downloads.tuxfamily.org/godotengine/3.3/Godot_v3.3-stable_export_templates.tpz -q
+          unzip Godot_v3.3-stable_export_templates.tpz -d .
+          mkdir -p "/Users/runner/Library/Application Support/Godot/templates/3.3.stable"
+          mv templates/* "/Users/runner/Library/Application Support/Godot/templates/3.3.stable"
+
+          mkdir -p $GITHUB_WORKSPACE/build
+          godot --export osx $GITHUB_WORKSPACE/build/boxnet.dmg
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: "Client - OSX"
+          path: ${{ github.workspace }}/build/boxnet.dmg
+  publish_osx:
+    name: Publish OSX
+    runs-on: ubuntu-latest
+    needs: osx
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Download Build
+        uses: actions/download-artifact@v2
+        with:
+          name: "Client - OSX"
+      - id: get_tag
+        name: Get Tag
+        env:
+          GITHUB_HEAD_REF: $${{ github.head_ref }}
+          GITHUB_BASE_REF: ${{ github.base_ref }}
+        run: |
+          if [ $GITHUB_EVENT_NAME == *"release"* ]
+          then
+            TAG=$(jq --raw-output '.release.tag_name' $GITHUB_EVENT_PATH)
+          elif [ "${{ github.event.inputs.version }}" = "" ]
+          then
+            TAG=$GITHUB_ACTOR
+          else
+            TAG=${{ github.event.inputs.version }}
+          fi
+          echo $TAG > VERSION
+          echo ::set-output name=TAG::$TAG
+      - name: Add Itch File
+        run: |
+          mkdir build
+          sudo cp ${{ github.workspace }}/.itch/osx.toml ./build/.itch.toml
+          mv boxnet.dmg ./build/boxnet.dmg
+      - name: Push to Itch
+        uses: josephbmanley/butler-publish-itchio-action@v1.0.1
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: osx
+          ITCH_GAME: boxnetjam
+          ITCH_USER: boxnet
+          PACKAGE: build
+          VERSION: ${{ steps.get_tag.outputs.TAG }}

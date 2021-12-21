@@ -1,0 +1,6 @@
+[[actions]]
+name = "play"
+path = "boxnet.exe"
+scope = "profile:me"
+sandbox = true
+platform = "windows"

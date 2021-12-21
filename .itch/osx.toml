@@ -1,0 +1,6 @@
+[[actions]]
+name = "play"
+path = "durgon_outpost.dmg"
+scope = "profile:me"
+sandbox = true
+platform = "osx"
