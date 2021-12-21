@@ -9,16 +9,16 @@ func input():
 	# Detect Input
 	velocity = Vector2()
 	
-	if Input.is_action_pressed("ui_left"):
+	if Input.is_action_pressed("move_left"):
 		velocity.x -= 1
 		#print("left")
-	if Input.is_action_pressed("ui_right"):
+	if Input.is_action_pressed("move_right"):
 		velocity.x += 1
 		#print("right")
-	if Input.is_action_pressed("ui_up"):
+	if Input.is_action_pressed("move_up"):
 		velocity.y -= 1
 		#print("up")
-	if Input.is_action_pressed("ui_down"):
+	if Input.is_action_pressed("move_down"):
 		velocity.y += 1
 		#print("down")
 		
