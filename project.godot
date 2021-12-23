@@ -10,12 +10,12 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "StaticBody2D",
-"class": "interactable",
+"class": "Interactable",
 "language": "GDScript",
 "path": "res://Scripts/interactable.gd"
 } ]
 _global_script_class_icons={
-"interactable": ""
+"Interactable": ""
 }
 
 [application]

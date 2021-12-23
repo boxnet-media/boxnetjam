@@ -1,4 +1,4 @@
-class_name interactable
+class_name Interactable
 extends StaticBody2D
 
 signal interacted
