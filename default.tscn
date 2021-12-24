@@ -12,12 +12,6 @@
 [sub_resource type="CanvasItemMaterial" id=4]
 light_mode = 2
 
-[sub_resource type="CanvasItemMaterial" id=6]
-light_mode = 2
-
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 31.8966, 31.616 )
-
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 128, 32 )
 
@@ -26,6 +20,12 @@ polygon = PoolVector2Array( 200, 72, 200, 120, 440, 120, 440, 72 )
 
 [sub_resource type="CanvasItemMaterial" id=5]
 light_mode = 2
+
+[sub_resource type="CanvasItemMaterial" id=6]
+light_mode = 2
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 31.8966, 31.616 )
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
@@ -39,31 +39,6 @@ material = SubResource( 4 )
 position = Vector2( 512, 304 )
 scale = Vector2( 64, 37.5 )
 texture = ExtResource( 6 )
-
-[node name="Test" type="KinematicBody2D" parent="."]
-position = Vector2( 250, 250 )
-script = ExtResource( 2 )
-speed = 150
-
-[node name="Sprite" type="Sprite" parent="Test"]
-material = SubResource( 6 )
-position = Vector2( -2, -2 )
-texture = ExtResource( 1 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Test"]
-position = Vector2( -2, -2 )
-shape = SubResource( 1 )
-
-[node name="hand" type="Node2D" parent="Test"]
-script = ExtResource( 8 )
-
-[node name="Light2D" type="Light2D" parent="Test/hand"]
-rotation = -1.5708
-texture = ExtResource( 4 )
-offset = Vector2( 0, 128 )
-texture_scale = 2.0
-energy = 0.5
-shadow_enabled = true
 
 [node name="round_light" type="Light2D" parent="."]
 position = Vector2( 760, 376 )
@@ -156,3 +131,28 @@ material = SubResource( 5 )
 position = Vector2( 744, 240 )
 scale = Vector2( 16, 4 )
 texture = ExtResource( 3 )
+
+[node name="Test" type="KinematicBody2D" parent="."]
+position = Vector2( 250, 250 )
+script = ExtResource( 2 )
+speed = 150
+
+[node name="Sprite" type="Sprite" parent="Test"]
+material = SubResource( 6 )
+position = Vector2( -2, -2 )
+texture = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Test"]
+position = Vector2( -2, -2 )
+shape = SubResource( 1 )
+
+[node name="hand" type="Node2D" parent="Test"]
+script = ExtResource( 8 )
+
+[node name="Light2D" type="Light2D" parent="Test/hand"]
+rotation = -1.5708
+texture = ExtResource( 4 )
+offset = Vector2( 0, 128 )
+texture_scale = 2.0
+energy = 0.5
+shadow_enabled = true
