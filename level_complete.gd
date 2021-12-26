@@ -1,5 +1,5 @@
 extends Area2D
-export var next_level = ""
+export(String, FILE) var next_level = ""
 
 
 
