@@ -1,5 +1,5 @@
 extends Area2D
-export(PackedScene) var last_level 
+export var last_level = "res://Scenes/victory!.tscn"
 
 
 
