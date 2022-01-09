@@ -1,8 +1,10 @@
 extends KinematicBody2D
 
-export var speed = 10
+export var speed = 80
 
 var velocity = Vector2()
+
+# Character Movement Controls
 
 func input():
 	# Detect Input
@@ -23,11 +25,22 @@ func input():
 		
 	velocity = velocity.normalized() * speed
 
-
 func _physics_process(delta):
 	
 	input()
 	move_and_collide(velocity * delta)
 	
-	pass # Replace with function body.
 
+# Character Interact Controls
+
+func interact():
+	
+	if Input.is_action_just_pressed("interact"):
+		for interactable in $GroupTracker.inRange:
+			interactable.recieve_interaction(self)
+	
+
+func _process(delta):
+	
+	interact()
+	
