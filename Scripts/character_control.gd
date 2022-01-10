@@ -33,14 +33,21 @@ func _physics_process(delta):
 
 # Character Interact Controls
 
+
 func interact():
 	
+	# If "E" is pressed, it emits the interacted signal
+	
 	if Input.is_action_just_pressed("interact"):
+		#print("trying to interact")
 		for interactable in $GroupTracker.inRange:
 			interactable.recieve_interaction(self)
 	
+
 
 func _process(delta):
 	
 	interact()
 	
+
+
