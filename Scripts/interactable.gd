@@ -7,4 +7,4 @@ func _ready():
 	add_to_group("interactable")
 
 func recieve_interaction(user : Node):
-	emit_signal("interacted")
+	emit_signal("interacted", user)

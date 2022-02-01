@@ -8,9 +8,6 @@ func _ready():
 	self.connect("body_entered", self, "areaEntered")
 	self.connect("body_exited", self, "areaExited")
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
 func areaEntered(body):
 	if body.is_in_group(group):
 		inRange.append(body)
