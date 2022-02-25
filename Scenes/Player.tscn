@@ -1,7 +1,7 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://test_sprites/character_sprites/right_walk_rf.png" type="Texture" id=1]
-[ext_resource path="res://Scripts/character_control.gd" type="Script" id=2]
+[ext_resource path="res://Scripts/PlayerControl.gd" type="Script" id=2]
 [ext_resource path="res://test_sprites/character_sprites/up_walk_lf.png" type="Texture" id=3]
 [ext_resource path="res://test_sprites/character_sprites/down_walk_rf.png" type="Texture" id=4]
 [ext_resource path="res://test_sprites/character_sprites/left_walk_lf.png" type="Texture" id=5]
@@ -15,6 +15,7 @@
 [ext_resource path="res://test_sprites/character_sprites/down_walk_idle.png" type="Texture" id=13]
 [ext_resource path="res://Scripts/character_animation.gd" type="Script" id=14]
 [ext_resource path="res://Scripts/group_tracker.gd" type="Script" id=15]
+[ext_resource path="res://Scripts/PlayerData.gd" type="Script" id=16]
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
@@ -28,6 +29,16 @@ animations = [ {
 "name": "right_idle",
 "speed": 5.0
 }, {
+"frames": [ ExtResource( 4 ), ExtResource( 13 ), ExtResource( 8 ), ExtResource( 13 ) ],
+"loop": true,
+"name": "walk_down",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 12 ) ],
+"loop": true,
+"name": "left_idle",
+"speed": 5.0
+}, {
 "frames": [ ExtResource( 7 ), ExtResource( 10 ), ExtResource( 3 ), ExtResource( 10 ) ],
 "loop": true,
 "name": "walk_up",
@@ -38,24 +49,14 @@ animations = [ {
 "name": "walk_right",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 12 ) ],
-"loop": true,
-"name": "left_idle",
-"speed": 5.0
-}, {
-"frames": [ ExtResource( 10 ) ],
-"loop": true,
-"name": "up_idle",
-"speed": 5.0
-}, {
 "frames": [ ExtResource( 13 ) ],
 "loop": true,
 "name": "down_idle",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 4 ), ExtResource( 13 ), ExtResource( 8 ), ExtResource( 13 ) ],
+"frames": [ ExtResource( 10 ) ],
 "loop": true,
-"name": "walk_down",
+"name": "up_idle",
 "speed": 5.0
 } ]
 
@@ -91,3 +92,6 @@ group = "interactable"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GroupTracker"]
 position = Vector2( 0, 0.255152 )
 shape = SubResource( 4 )
+
+[node name="PlayerData" type="Node" parent="."]
+script = ExtResource( 16 )
