@@ -1,14 +1,6 @@
 extends KinematicBody2D
 
-# Exported Variables
-
 export var speed = 80
-
-# Onready Variables
-
-onready var playerData = $PlayerData
-
-# Variables
 
 var velocity = Vector2()
 
@@ -49,7 +41,7 @@ func interact():
 	if Input.is_action_just_pressed("interact"):
 		#print("trying to interact")
 		for interactable in $GroupTracker.inRange:
-			interactable.recieve_interaction(playerData)
+			interactable.recieve_interaction(self)
 	
 
 
