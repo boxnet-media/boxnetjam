@@ -1,10 +1,13 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=15 format=2]
 
+[ext_resource path="res://Door.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/PickupKey.gd" type="Script" id=2]
 [ext_resource path="res://test_sprites/brick.png" type="Texture" id=3]
+[ext_resource path="res://test_sprites/Test_doorClosed.png" type="Texture" id=4]
 [ext_resource path="res://test_sprites/room_light.png" type="Texture" id=5]
 [ext_resource path="res://test_sprites/room.png" type="Texture" id=6]
 [ext_resource path="res://test_sprites/light_source.png" type="Texture" id=7]
+[ext_resource path="res://test_sprites/Test_doorOpen.png" type="Texture" id=8]
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=9]
 
 [sub_resource type="CanvasItemMaterial" id=4]
@@ -20,6 +23,7 @@ polygon = PoolVector2Array( 200, 72, 200, 120, 440, 120, 440, 72 )
 light_mode = 2
 
 [sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 12.1962, 15.4572 )
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
@@ -30,7 +34,7 @@ __meta__ = {
 
 [node name="Background" type="Sprite" parent="."]
 material = SubResource( 4 )
-position = Vector2( 512, 304 )
+position = Vector2( 330.636, 253.85 )
 scale = Vector2( 64, 37.5 )
 texture = ExtResource( 6 )
 
@@ -129,18 +133,32 @@ texture = ExtResource( 3 )
 [node name="Player" parent="." instance=ExtResource( 9 )]
 position = Vector2( 117.151, 236.781 )
 
-[node name="TestItem" type="StaticBody2D" parent="."]
+[node name="woodendoor" type="StaticBody2D" parent="."]
+collision_mask = 3
+script = ExtResource( 1 )
+requiredKey = "woodenkey"
+doorClosed = ExtResource( 4 )
+doorOpen = ExtResource( 8 )
+
+[node name="Sprite" type="Sprite" parent="woodendoor"]
+position = Vector2( 213.347, 243.165 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="woodendoor"]
+position = Vector2( 209.497, 243.089 )
+shape = SubResource( 7 )
+
+[node name="woodenkey" type="StaticBody2D" parent="."]
+position = Vector2( -21.9835, 65.9505 )
 collision_layer = 2
 collision_mask = 2
 script = ExtResource( 2 )
 keyName = "woodenkey"
 keyTexture = ExtResource( 3 )
 
-[node name="Sprite" type="Sprite" parent="TestItem"]
+[node name="Sprite" type="Sprite" parent="woodenkey"]
 position = Vector2( 213.347, 243.165 )
-scale = Vector2( 0.3, 0.3 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TestItem"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="woodenkey"]
 light_mask = 2
-position = Vector2( 212.927, 241.065 )
+position = Vector2( 211.693, 241.715 )
 shape = SubResource( 7 )

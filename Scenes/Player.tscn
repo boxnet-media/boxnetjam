@@ -24,19 +24,14 @@ animations = [ {
 "name": "walk_left",
 "speed": 5.0
 }, {
+"frames": [ ExtResource( 10 ) ],
+"loop": true,
+"name": "up_idle",
+"speed": 5.0
+}, {
 "frames": [ ExtResource( 11 ) ],
 "loop": true,
 "name": "right_idle",
-"speed": 5.0
-}, {
-"frames": [ ExtResource( 4 ), ExtResource( 13 ), ExtResource( 8 ), ExtResource( 13 ) ],
-"loop": true,
-"name": "walk_down",
-"speed": 5.0
-}, {
-"frames": [ ExtResource( 12 ) ],
-"loop": true,
-"name": "left_idle",
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 7 ), ExtResource( 10 ), ExtResource( 3 ), ExtResource( 10 ) ],
@@ -54,9 +49,14 @@ animations = [ {
 "name": "down_idle",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 10 ) ],
+"frames": [ ExtResource( 4 ), ExtResource( 13 ), ExtResource( 8 ), ExtResource( 13 ) ],
 "loop": true,
-"name": "up_idle",
+"name": "walk_down",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 12 ) ],
+"loop": true,
+"name": "left_idle",
 "speed": 5.0
 } ]
 
@@ -85,7 +85,7 @@ shape = SubResource( 3 )
 
 [node name="GroupTracker" type="Area2D" parent="."]
 collision_layer = 2
-collision_mask = 2
+collision_mask = 3
 script = ExtResource( 15 )
 group = "interactable"
 
